@@ -1,0 +1,23 @@
+import pandas as pd
+
+# Replace the file path with the path to your CSV file
+csv_file_path = "ES_Merged.csv"
+
+# Read the CSV file into a Pandas DataFrame
+df = pd.read_csv(csv_file_path)
+
+# Replace missing data in "Year_constructed" and "Score(s)" columns with 1000
+df["Year constructed"] = df["Year constructed"].fillna(10000)
+df["Score(s)"] = df["Score(s)"].fillna(1000)
+
+# Drop rows with missing data in "Score(s)" column
+df = df.dropna(subset=["Score(s)"])
+
+# Convert the specified columns to the desired data types
+df["Score(s)"] = df["Score(s)"].astype(int)
+df["Year constructed"] = df["Year constructed"].astype(int)
+df["Gross Floor Area"] = df["Gross Floor Area"].astype(int)
+df["Property/Plant ID"] = df["Property/Plant ID"].astype(str)
+
+# Write the modified DataFrame back to a CSV file
+df.to_csv("ES_Merged_IntegerFix.csv", index=False)
